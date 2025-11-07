@@ -38,7 +38,7 @@ jobs:
           pnpm run test:performance || true
 
       - name: Archive performance results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: performance-results
           path: dist/

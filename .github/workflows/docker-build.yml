@@ -26,7 +26,13 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: ${{ !env.ACT && 'pnpm' || '' }} 
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm run build
 
       - name: Set up Docker Buildx
         if: ${{ !env.ACT }}

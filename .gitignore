@@ -30,4 +30,5 @@ jspm_packages/
 # Secrets
 .secrets 
 
-# 
+# ACT
+.actrc

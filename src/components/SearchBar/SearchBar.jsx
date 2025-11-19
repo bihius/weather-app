@@ -16,7 +16,7 @@ function SearchBar({ onSearchChange }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search city..."
-          className="flex-grow px-3 py-2 text-sm focus:outline-none"
+          className="grow px-3 py-2 text-sm focus:outline-none"
         />
         <button
           onClick={handleSearch}

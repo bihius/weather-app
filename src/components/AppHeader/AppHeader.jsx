@@ -1,8 +1,8 @@
 function AppHeader() {
   return (
-    <header className="bg-white text-gray-800 py-4 px-4 shadow-lg rounded-lg flex items-center justify-between">
+    <header className="bg-white text-gray-800 py-4 shadow-lg rounded-lg flex items-center justify-between">
       <h1 className="text-3xl font-bold px-2">Weather App</h1>
-      <button className="p-2 hover:bg-gray-100 rounded">
+      <button className=" hover:bg-gray-100 rounded">
         <svg
           className="w-6 h-6"
           fill="none"

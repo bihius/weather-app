@@ -1,10 +1,13 @@
 import React from "react";
+import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
 
 function WeatherDetails({ city, weatherData }) {
+  const getIcon = (iconName) => getWeatherIconPath(iconName);
+
   // Sample weather data structure - replace with actual API data
   const defaultData = {
     temperature: 15,
-    icon: "lrainbow",
+    icon: "Rainbow",
     precipitation: {
       probability: 65,
       type: "rain",
@@ -17,11 +20,11 @@ function WeatherDetails({ city, weatherData }) {
     },
     cloudCover: 75,
     forecast: [
-      { day: "Tomorrow", temperature: 16, icon: "lcloud" },
-      { day: "Wed", temperature: 18, icon: "lsun" },
-      { day: "Thu", temperature: 14, icon: "lcloud-ldrops" },
-      { day: "Fri", temperature: 12, icon: "lstorm" },
-      { day: "Sat", temperature: 17, icon: "lsun-lwind" },
+      { day: "Tomorrow", temperature: 16, icon: "Cloud" },
+      { day: "Wed", temperature: 18, icon: "Sun" },
+      { day: "Thu", temperature: 14, icon: "Drops" },
+      { day: "Fri", temperature: 12, icon: "Storm" },
+      { day: "Sat", temperature: 17, icon: "SunWind" },
     ],
   };
 
@@ -40,7 +43,7 @@ function WeatherDetails({ city, weatherData }) {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Current Weather Card */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-lg p-8">
+        <div className="lg:col-span-1 rounded-2xl shadow-lg p-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
             Current Weather
           </h2>
@@ -48,11 +51,11 @@ function WeatherDetails({ city, weatherData }) {
           {/* Temperature and Icon */}
           <div className="flex flex-col items-center mb-8">
             <img
-              src={`/src/assets/WeatherIcons/${data.icon}.png`}
+              src={getIcon(data.icon)}
               alt="weather icon"
               className="w-24 h-24 mb-4 object-contain"
               onError={(e) => {
-                e.currentTarget.src = "/src/assets/WeatherIcons/lcloud.png";
+                e.currentTarget.src = FALLBACK_ICON;
               }}
             />
             <div className="text-5xl font-bold text-gray-800">
@@ -78,7 +81,7 @@ function WeatherDetails({ city, weatherData }) {
         </div>
 
         {/* Precipitation and Wind Card */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-lg p-8">
+        <div className="lg:col-span-1 rounded-2xl shadow-lg p-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
             Conditions
           </h2>
@@ -141,7 +144,7 @@ function WeatherDetails({ city, weatherData }) {
         </div>
 
         {/* 5-Day Forecast Card */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-lg p-8">
+        <div className="lg:col-span-1 rounded-2xl shadow-lg p-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
             5-Day Forecast
           </h2>
@@ -155,11 +158,11 @@ function WeatherDetails({ city, weatherData }) {
                   <p className="font-semibold text-gray-800">{day.day}</p>
                 </div>
                 <img
-                  src={`/src/assets/WeatherIcons/${day.icon}.png`}
+                  src={getIcon(day.icon)}
                   alt={day.day}
                   className="w-10 h-10 mx-2 object-contain"
                   onError={(e) => {
-                    e.currentTarget.src = "/src/assets/WeatherIcons/lcloud.png";
+                    e.currentTarget.src = FALLBACK_ICON;
                   }}
                 />
                 <div className="text-right">

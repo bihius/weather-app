@@ -1,7 +1,8 @@
 import React from "react";
+import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
 
 function CityCard({ city, temperature, icon }) {
-  const iconSrc = `/src/assets/WeatherIcons/${icon}.png`;
+  const iconSrc = getWeatherIconPath(icon);
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 h-32 flex items-center justify-between gap-6 hover:shadow-lg hover:border-gray-300 transition-shadow duration-200 w-full border border-gray-200">
@@ -11,7 +12,7 @@ function CityCard({ city, temperature, icon }) {
           src={iconSrc}
           alt={`${icon} weather`}
           onError={(e) => {
-            e.currentTarget.src = "/src/assets/WeatherIcons/grey.png";
+            e.currentTarget.src = FALLBACK_ICON;
           }}
           className="w-12 h-12 object-contain"
         />

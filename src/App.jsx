@@ -2,14 +2,13 @@ import "./App.css";
 import React from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import AppHeader from "./components/AppHeader/AppHeader";
-import CityCard from "./components/CityCard/CityCard";
-import WeatherDetailsPage from "./pages/WeatherDetailsPage";
 
 function App() {
   return (
-    <>
-      <WeatherDetailsPage />
-    </>
+    <div className="px-4 py-6 max-w-6xl mx-auto space-y-4">
+      <AppHeader />
+      <SearchBar onSearchChange={() => {}} />
+    </div>
   );
 }
 

@@ -7,7 +7,7 @@ function WeatherDetails({ city, weatherData }) {
   // Sample weather data structure - replace with actual API data
   const defaultData = {
     temperature: 15,
-    icon: "Rainbow",
+    icon: "Partly_Cloudy",
     precipitation: {
       probability: 65,
       type: "rain",
@@ -20,11 +20,11 @@ function WeatherDetails({ city, weatherData }) {
     },
     cloudCover: 75,
     forecast: [
-      { day: "Tomorrow", temperature: 16, icon: "Cloud" },
-      { day: "Wed", temperature: 18, icon: "Sun" },
-      { day: "Thu", temperature: 14, icon: "Drops" },
-      { day: "Fri", temperature: 12, icon: "Storm" },
-      { day: "Sat", temperature: 17, icon: "SunWind" },
+      { day: "Tomorrow", temperature: 16, icon: "Partly_Cloudy" },
+      { day: "Wed", temperature: 18, icon: "Sunny" },
+      { day: "Thu", temperature: 14, icon: "Light_Rain" },
+      { day: "Fri", temperature: 12, icon: "Thunderstorm" },
+      { day: "Sat", temperature: 17, icon: "Blowing_Sand" },
     ],
   };
 
@@ -148,26 +148,26 @@ function WeatherDetails({ city, weatherData }) {
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
             5-Day Forecast
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-1">
             {data.forecast.map((day, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                className="flex items-center px-2 py-1 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
               >
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-800">{day.day}</p>
-                </div>
+                <p className="font-semibold text-gray-800 w-20 text-left">
+                  {day.day}
+                </p>
+                <p className="font-bold text-gray-800 ml-auto pr-3">
+                  {day.temperature}°C
+                </p>
                 <img
                   src={getIcon(day.icon)}
                   alt={day.day}
-                  className="w-10 h-10 mx-2 object-contain"
+                  className="w-8 h-8 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = FALLBACK_ICON;
                   }}
                 />
-                <div className="text-right">
-                  <p className="font-bold text-gray-800">{day.temperature}°C</p>
-                </div>
               </div>
             ))}
           </div>

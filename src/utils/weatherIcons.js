@@ -25,60 +25,22 @@ const iconLookup = ICON_FILE_NAMES.reduce((acc, fileName) => {
   acc[sanitize(fileName)] = fileName;
   return acc;
 }, {});
-
-const aliasMap = {
-  // clouds
-  lcloud: "Partly_Cloudy",
-  cloud: "Partly_Cloudy",
-  cloudy: "Partly_Cloudy",
-  partlycloudy: "Partly_Cloudy",
-
-  // sun
-  lsun: "Sunny",
-  sun: "Sunny",
-  sunny: "Sunny",
-
-  // storm / thunder
-  lstorm: "Thunderstorm",
-  storm: "Thunderstorm",
-  thunder: "Thunderstorm",
-  thunderstorm: "Thunderstorm",
-
-  // rain variants
-  ldrops: "Light_Rain",
-  drops: "Light_Rain",
-  drop: "Light_Rain",
-  lightrain: "Light_Rain",
-  moderaterain: "Moderate_Rain",
-  moderaterainy: "Moderate_Rain",
-
-  // snow variants
-  lightsnow: "Light_Snow",
-  heavysnow: "Heavy_Snow",
-  moderatesnow: "Moderate_Snow",
-
-  // other
-  fog: "Foggy",
-  foggy: "Foggy",
-  haze: "Haze",
-  hail: "Hail",
-  blowing_sand: "Blowing_Sand",
-  nightsky: "Night",
-  night: "Night",
-  overcast: "Overcast",
-  unknown: "Unknown",
-};
+// Build an alias map from the canonical filenames so there is a direct alias
+// entry for every file (sanitized -> original file name). This mirrors the
+// list of files in the icon pack and avoids inventing any new aliases.
+const aliasMap = Object.keys(iconLookup).reduce((acc, key) => {
+  acc[key] = iconLookup[key];
+  return acc;
+}, {});
 
 const resolveFromLookup = (sanitizedKey) => {
   if (!sanitizedKey) return null;
-  if (iconLookup[sanitizedKey]) {
-    return iconLookup[sanitizedKey];
-  }
 
-  const aliasTarget = aliasMap[sanitizedKey];
-  if (aliasTarget && iconLookup[aliasTarget]) {
-    return iconLookup[aliasTarget];
-  }
+  // First, try exact match against canonical filenames
+  if (iconLookup[sanitizedKey]) return iconLookup[sanitizedKey];
+
+  // Fall back to alias map populated from canonical names
+  if (aliasMap[sanitizedKey]) return aliasMap[sanitizedKey];
 
   return null;
 };

@@ -41,7 +41,7 @@ function WeatherDetails({ city, weatherData }) {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
         {/* Current Weather Card */}
         <div className="lg:col-span-1 rounded-2xl shadow-lg p-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
@@ -148,22 +148,22 @@ function WeatherDetails({ city, weatherData }) {
           <h2 className="text-xl font-semibold text-gray-800 mb-6">
             5-Day Forecast
           </h2>
-          <div className="space-y-1">
+          <div className="space-y-2">
             {data.forecast.map((day, index) => (
               <div
                 key={index}
-                className="flex items-center px-2 py-1 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                className="flex items-center px-3 py-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
               >
-                <p className="font-semibold text-gray-800 w-20 text-left">
+                <p className="font-semibold text-gray-800 w-20 text-left text-sm">
                   {day.day}
                 </p>
-                <p className="font-bold text-gray-800 ml-auto pr-3">
+                <p className="font-bold text-gray-800 ml-auto pr-3 text-base">
                   {day.temperature}°C
                 </p>
                 <img
                   src={getIcon(day.icon)}
                   alt={day.day}
-                  className="w-8 h-8 object-contain"
+                  className="w-10 h-10 object-contain"
                   onError={(e) => {
                     e.currentTarget.src = FALLBACK_ICON;
                   }}

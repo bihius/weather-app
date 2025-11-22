@@ -5,18 +5,20 @@ function CityCard({ city, temperature, icon }) {
   const iconSrc = getWeatherIconPath(icon);
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 h-32 flex items-center justify-between gap-6 hover:shadow-lg hover:border-gray-300 transition-shadow duration-200 w-full border border-gray-200">
-      <h3 className="text-lg font-semibold text-gray-800">{city}</h3>
-      <div className="flex items-center gap-3">
+    <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col sm:flex-row items-center justify-between gap-4 hover:shadow-xl hover:scale-[1.02] transition-all duration-200 border border-gray-100 cursor-pointer group">
+      <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
+        {city}
+      </h3>
+      <div className="flex items-center">
         <img
           src={iconSrc}
           alt={`${icon} weather`}
           onError={(e) => {
             e.currentTarget.src = FALLBACK_ICON;
           }}
-          className="w-12 h-12 object-contain"
+          className="w-16 h-16 object-contain mr-4"
         />
-        <p className="text-2xl font-bold text-gray-700">{temperature}°C</p>
+        <p className="text-3xl font-bold text-gray-800 min-w-[80px]">{temperature}°C</p>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ function WeatherDetails({ city, weatherData }) {
   // Sample weather data structure - replace with actual API data
   const defaultData = {
     temperature: 15,
-    icon: "lcloud",
+    icon: "lrainbow",
     precipitation: {
       probability: 65,
       type: "rain",
@@ -17,7 +17,7 @@ function WeatherDetails({ city, weatherData }) {
     },
     cloudCover: 75,
     forecast: [
-      { day: "Tomorrow", temperature: 16, icon: "lcloud-lsunny" },
+      { day: "Tomorrow", temperature: 16, icon: "lcloud" },
       { day: "Wed", temperature: 18, icon: "lsun" },
       { day: "Thu", temperature: 14, icon: "lcloud-ldrops" },
       { day: "Fri", temperature: 12, icon: "lstorm" },
@@ -28,7 +28,7 @@ function WeatherDetails({ city, weatherData }) {
   const data = weatherData || defaultData;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-blue-100 p-4 md:p-8">
+    <div className="min-h-screen bg-linear-to-br p-4 md:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-2">
@@ -167,55 +167,6 @@ function WeatherDetails({ city, weatherData }) {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Full Width Details - Responsive */}
-      <div className="max-w-6xl mx-auto mt-6">
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">
-            Detailed Overview
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4 text-center">
-              <p className="text-gray-600 text-sm font-medium mb-1">
-                Temperature
-              </p>
-              <p className="text-2xl font-bold text-blue-600">
-                {data.temperature}°C
-              </p>
-            </div>
-            <div className="bg-green-50 rounded-lg p-4 text-center">
-              <p className="text-gray-600 text-sm font-medium mb-1">
-                Cloud Cover
-              </p>
-              <p className="text-2xl font-bold text-green-600">
-                {data.cloudCover}%
-              </p>
-            </div>
-            <div className="bg-purple-50 rounded-lg p-4 text-center">
-              <p className="text-gray-600 text-sm font-medium mb-1">
-                Wind Speed
-              </p>
-              <p className="text-2xl font-bold text-purple-600">
-                {data.wind.speed} km/h
-              </p>
-            </div>
-            <div className="bg-orange-50 rounded-lg p-4 text-center">
-              <p className="text-gray-600 text-sm font-medium mb-1">
-                Precipitation
-              </p>
-              <p className="text-2xl font-bold text-orange-600">
-                {data.precipitation.probability}%
-              </p>
-            </div>
-            <div className="bg-cyan-50 rounded-lg p-4 text-center">
-              <p className="text-gray-600 text-sm font-medium mb-1">Amount</p>
-              <p className="text-2xl font-bold text-cyan-600">
-                {data.precipitation.amount} mm
-              </p>
-            </div>
           </div>
         </div>
       </div>

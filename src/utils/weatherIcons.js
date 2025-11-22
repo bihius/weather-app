@@ -1,44 +1,23 @@
 const ICON_FILE_NAMES = [
-  "Autumn",
-  "Cloud",
-  "CloudElec",
-  "CloudElecrainy",
-  "CloudMoon",
-  "CloudMoonWind",
-  "CloudSunny",
-  "CloudSunnyWind",
-  "CloudWind",
-  "Drop",
-  "Drops",
-  "Flood",
-  "Glasses",
-  "Moon-Star",
-  "Moon",
-  "Moonwind",
-  "Rainbow",
-  "RainyCloud",
-  "Snow",
-  "SnowyCloud",
-  "SnowyCloudBig",
-  "Spring",
-  "Stars",
-  "Storm-1",
-  "Storm",
-  "Sun",
-  "SunWind",
-  "Sunrise",
-  "Sunset",
-  "Thunder",
-  "Toorbin",
-  "Umbrella",
-  "Wind",
-  "WindDirection",
-  "thermometer",
-  "thermometerblank",
+  "Blowing_Sand",
+  "Foggy",
+  "Hail",
+  "Haze",
+  "Heavy_Snow",
+  "Light_Rain",
+  "Light_Snow",
+  "Moderate_Rain",
+  "Moderate_Snow",
+  "Night",
+  "Overcast",
+  "Partly_Cloudy",
+  "Sunny",
+  "Thunderstorm",
+  "Unknown",
 ];
 
-const FALLBACK_ICON_NAME = "Cloud";
-const FALLBACK_ICON = `/WeatherIcons/${FALLBACK_ICON_NAME}.png`;
+const FALLBACK_ICON_NAME = "Unknown";
+const FALLBACK_ICON = `/WeatherIcons/${FALLBACK_ICON_NAME}.svg`;
 
 const sanitize = (value = "") => value.toLowerCase().replace(/[^a-z0-9]/g, "");
 
@@ -48,40 +27,46 @@ const iconLookup = ICON_FILE_NAMES.reduce((acc, fileName) => {
 }, {});
 
 const aliasMap = {
-  lcloud: "cloud",
-  cloudicon: "cloud",
-  cloudy: "cloud",
-  cloud: "cloud",
-  lcloudlsunny: "cloudsunny",
-  cloudsunny: "cloudsunny",
-  lcloudlwind: "cloudwind",
-  cloudwind: "cloudwind",
-  lcloudlmoon: "cloudmoon",
-  cloudmoon: "cloudmoon",
-  lcloudlmoonwind: "cloudmoonwind",
-  cloudmoonwind: "cloudmoonwind",
-  lcloudldrops: "rainycloud",
-  rainycloud: "rainycloud",
-  ldrops: "drops",
-  drops: "drops",
-  drop: "drop",
-  sun: "sun",
-  lsun: "sun",
-  sunrise: "sunrise",
-  sunset: "sunset",
-  lsunlwind: "sunwind",
-  sunwind: "sunwind",
-  rainbow: "rainbow",
-  storm: "storm",
-  lstorm: "storm",
-  storm1: "storm-1",
-  thunder: "thunder",
-  wind: "wind",
-  winddirection: "winddirection",
-  umbrella: "umbrella",
-  snow: "snow",
-  snowycloud: "snowycloud",
-  snowycloudbig: "snowycloudbig",
+  // clouds
+  lcloud: "Partly_Cloudy",
+  cloud: "Partly_Cloudy",
+  cloudy: "Partly_Cloudy",
+  partlycloudy: "Partly_Cloudy",
+
+  // sun
+  lsun: "Sunny",
+  sun: "Sunny",
+  sunny: "Sunny",
+
+  // storm / thunder
+  lstorm: "Thunderstorm",
+  storm: "Thunderstorm",
+  thunder: "Thunderstorm",
+  thunderstorm: "Thunderstorm",
+
+  // rain variants
+  ldrops: "Light_Rain",
+  drops: "Light_Rain",
+  drop: "Light_Rain",
+  lightrain: "Light_Rain",
+  moderaterain: "Moderate_Rain",
+  moderaterainy: "Moderate_Rain",
+
+  // snow variants
+  lightsnow: "Light_Snow",
+  heavysnow: "Heavy_Snow",
+  moderatesnow: "Moderate_Snow",
+
+  // other
+  fog: "Foggy",
+  foggy: "Foggy",
+  haze: "Haze",
+  hail: "Hail",
+  blowing_sand: "Blowing_Sand",
+  nightsky: "Night",
+  night: "Night",
+  overcast: "Overcast",
+  unknown: "Unknown",
 };
 
 const resolveFromLookup = (sanitizedKey) => {
@@ -126,7 +111,13 @@ export const getWeatherIconPath = (iconName) => {
     resolved = resolveFromLookup(sanitize(withoutExtension));
   }
 
-  return resolved ? `/WeatherIcons/${resolved}.png` : FALLBACK_ICON;
+  // accept svg filenames too
+  if (!resolved && /\.svg$/i.test(iconName)) {
+    const withoutExtension = iconName.replace(/\.svg$/i, "");
+    resolved = resolveFromLookup(sanitize(withoutExtension));
+  }
+
+  return resolved ? `/WeatherIcons/${resolved}.svg` : FALLBACK_ICON;
 };
 
 export { FALLBACK_ICON };

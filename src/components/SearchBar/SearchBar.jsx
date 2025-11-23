@@ -16,8 +16,8 @@ function SearchBar({ onSearchChange }) {
 
   return (
     <div className="w-full flex items-center justify-center py-6">
-      <div className="w-full max-w-[600px] mx-auto flex items-center bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200/50 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-400 transition-all duration-200">
-        <div className="flex items-center px-4 text-gray-400">
+      <div className="w-full max-w-[600px] mx-auto flex items-center bg-white dark:bg-gray-800 shadow-lg rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-400 transition-all duration-200">
+        <div className="flex items-center px-4 text-gray-400 dark:text-gray-500">
           <svg
             className="w-5 h-5"
             fill="none"
@@ -38,7 +38,7 @@ function SearchBar({ onSearchChange }) {
           onChange={(e) => setQuery(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Search for a city..."
-          className="flex-1 px-2 py-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none bg-transparent"
+          className="flex-1 px-2 py-4 text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none bg-transparent"
         />
         <button
           onClick={handleSearch}

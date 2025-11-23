@@ -17,7 +17,13 @@ const ICON_FILE_NAMES = [
 ];
 
 const FALLBACK_ICON_NAME = "Unknown";
-const FALLBACK_ICON = `/WeatherIcons/${FALLBACK_ICON_NAME}.svg`;
+
+const getFallbackIcon = (theme = "light") => {
+  const folder = theme === "dark" ? "WeatherIconsDark" : "WeatherIconsLight";
+  return `/${folder}/${FALLBACK_ICON_NAME}.svg`;
+};
+
+const FALLBACK_ICON = getFallbackIcon();
 
 const sanitize = (value = "") => value.toLowerCase().replace(/[^a-z0-9]/g, "");
 
@@ -55,9 +61,9 @@ const stripLeadingLFromSegments = (iconName = "") => {
   return sanitize(stripped);
 };
 
-export const getWeatherIconPath = (iconName) => {
+export const getWeatherIconPath = (iconName, theme = "light") => {
   if (!iconName) {
-    return FALLBACK_ICON;
+    return getFallbackIcon(theme);
   }
 
   const normalized = sanitize(iconName);
@@ -79,7 +85,8 @@ export const getWeatherIconPath = (iconName) => {
     resolved = resolveFromLookup(sanitize(withoutExtension));
   }
 
-  return resolved ? `/WeatherIcons/${resolved}.svg` : FALLBACK_ICON;
+  const folder = theme === "dark" ? "WeatherIconsDark" : "WeatherIconsLight";
+  return resolved ? `/${folder}/${resolved}.svg` : getFallbackIcon(theme);
 };
 
 export { FALLBACK_ICON };

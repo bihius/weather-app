@@ -1,22 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useLayoutEffect } from "react";
 
 const SettingsContext = createContext();
 
 export function SettingsProvider({ children }) {
-  // Apply theme synchronously before React renders
+  // Get initial theme from localStorage
   const getInitialTheme = () => {
     const saved = localStorage.getItem("theme");
-    const initialTheme = saved || "light";
-    
-    // Apply theme immediately to prevent flash
-    const root = document.documentElement;
-    if (initialTheme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    
-    return initialTheme;
+    return saved || "light";
   };
 
   const [theme, setTheme] = useState(getInitialTheme);
@@ -26,14 +16,19 @@ export function SettingsProvider({ children }) {
     return saved || "celsius";
   });
 
-  // Apply theme when it changes
-  useEffect(() => {
+  // Apply theme on mount and when it changes - use useLayoutEffect for synchronous update
+  useLayoutEffect(() => {
     const root = document.documentElement;
+    // Remove dark class first to ensure clean state
+    root.classList.remove("dark");
+    // Add dark class if theme is dark
     if (theme === "dark") {
       root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
     }
+  }, [theme]);
+
+  // Save theme to localStorage (can be async)
+  useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 

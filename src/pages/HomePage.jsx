@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import SearchBar from "../components/SearchBar/SearchBar";
 import AppHeader from "../components/AppHeader/AppHeader";
 import CityCard from "../components/CityCard/CityCard";
@@ -18,26 +18,48 @@ function HomePage() {
     { city: "Barcelona", temperature: 20, icon: "Partly_Cloudy" },
   ]);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter cities based on search query (case-insensitive)
+  const filteredCities = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return cities;
+    }
+    const query = searchQuery.toLowerCase().trim();
+    return cities.filter((cityData) =>
+      cityData.city.toLowerCase().includes(query)
+    );
+  }, [cities, searchQuery]);
+
   const handleSearchChange = (query) => {
-    // TODO: Implement search functionality
-    console.log("Search query:", query);
+    setSearchQuery(query);
   };
 
   return (
-    <div className="px-4 py-6 max-w-6xl mx-auto space-y-6">
-      <AppHeader />
-      <SearchBar onSearchChange={handleSearchChange} />
-      
-      {/* Cities Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {cities.map((cityData, index) => (
-          <CityCard
-            key={index}
-            city={cityData.city}
-            temperature={cityData.temperature}
-            icon={cityData.icon}
-          />
-        ))}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+      <div className="px-4 py-6 max-w-6xl mx-auto space-y-6">
+        <AppHeader />
+        <SearchBar onSearchChange={handleSearchChange} />
+        
+        {/* Cities Grid */}
+        {filteredCities.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filteredCities.map((cityData, index) => (
+              <CityCard
+                key={index}
+                city={cityData.city}
+                temperature={cityData.temperature}
+                icon={cityData.icon}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              No cities found matching "{searchQuery}"
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

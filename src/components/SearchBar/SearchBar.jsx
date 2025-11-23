@@ -4,6 +4,13 @@ import { useCallback } from "react";
 function SearchBar({ onSearchChange }) {
   const [query, setQuery] = useState("");
 
+  const handleInputChange = useCallback((e) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    // Call onSearchChange for real-time filtering
+    onSearchChange(newQuery);
+  }, [onSearchChange]);
+
   const handleSearch = useCallback(() => {
     onSearchChange(query);
   }, [onSearchChange, query]);
@@ -35,7 +42,7 @@ function SearchBar({ onSearchChange }) {
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleInputChange}
           onKeyPress={handleKeyPress}
           placeholder="Search for a city..."
           className="flex-1 px-2 py-4 text-base text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none bg-transparent"

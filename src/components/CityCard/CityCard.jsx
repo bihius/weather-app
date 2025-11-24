@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
-import { useSettings } from "../../contexts/SettingsContext";
+import { useSettings } from "../../contexts/useSettings";
 import { convertTemperature, getTemperatureUnit } from "../../utils/temperature";
 
 function CityCard({ city, temperature, icon, lat, lon, loading = false }) {

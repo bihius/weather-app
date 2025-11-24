@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, useLayoutEffect } from "react";
+import React, { createContext, useState, useEffect, useLayoutEffect } from "react";
 
-const SettingsContext = createContext();
+export const SettingsContext = createContext();
 
 export function SettingsProvider({ children }) {
   // Get initial theme from localStorage
@@ -56,13 +56,5 @@ export function SettingsProvider({ children }) {
       {children}
     </SettingsContext.Provider>
   );
-}
-
-export function useSettings() {
-  const context = useContext(SettingsContext);
-  if (!context) {
-    throw new Error("useSettings must be used within a SettingsProvider");
-  }
-  return context;
 }
 

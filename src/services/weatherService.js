@@ -75,7 +75,6 @@ function transformOpenMeteoData(data) {
   const dailyCodes = daily.weather_code || [];
   const dailyMaxTemps = daily.temperature_2m_max || [];
   const dailyMinTemps = daily.temperature_2m_min || [];
-  const dailyPrecipProb = daily.precipitation_probability_max || [];
 
   for (let i = 1; i <= 5 && i < dailyCodes.length; i++) {
     const maxTemp = Math.round(dailyMaxTemps[i] || 0);

@@ -1,15 +1,17 @@
 import "./App.css";
 import React from "react";
-import SearchBar from "./components/SearchBar/SearchBar";
-import AppHeader from "./components/AppHeader/AppHeader";
-import CityCard from "./components/CityCard/CityCard";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import WeatherDetailsPage from "./pages/WeatherDetailsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
-    <>
-      <WeatherDetailsPage />
-    </>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/weather/:cityName" element={<WeatherDetailsPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
+    </Routes>
   );
 }
 

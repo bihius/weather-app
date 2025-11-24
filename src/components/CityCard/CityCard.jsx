@@ -4,13 +4,18 @@ import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
 import { useSettings } from "../../contexts/SettingsContext";
 import { convertTemperature, getTemperatureUnit } from "../../utils/temperature";
 
-function CityCard({ city, temperature, icon }) {
+function CityCard({ city, temperature, icon, lat, lon, loading = false }) {
   const navigate = useNavigate();
   const { temperatureUnit, theme } = useSettings();
   const iconSrc = useMemo(() => getWeatherIconPath(icon, theme), [icon, theme]);
 
   const handleClick = () => {
+    // If coordinates are provided, include them in URL
+    if (lat && lon) {
+      navigate(`/weather/${encodeURIComponent(city)}?lat=${lat}&lon=${lon}`);
+    } else {
     navigate(`/weather/${encodeURIComponent(city)}`);
+    }
   };
 
   const displayTemp = convertTemperature(temperature, temperatureUnit);
@@ -25,16 +30,26 @@ function CityCard({ city, temperature, icon }) {
         {city}
       </h3>
       <div className="flex items-center">
+        {loading ? (
+          <div className="w-16 h-16 mr-4 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
         <img
           src={iconSrc}
           alt={`${icon} weather`}
           onError={(e) => {
-            const fallbackIcon = theme === "dark" ? "/WeatherIconsDark/Unknown.svg" : "/WeatherIconsLight/Unknown.svg";
-            e.currentTarget.src = fallbackIcon;
+              const fallbackIcon = theme === "dark" ? "/WeatherIconsDark/Unknown.svg" : "/WeatherIconsLight/Unknown.svg";
+              e.currentTarget.src = fallbackIcon;
           }}
           className="w-16 h-16 object-contain mr-4"
         />
-        <p className="text-3xl font-bold text-gray-800 dark:text-white min-w-[80px]">{displayTemp}{tempUnit}</p>
+        )}
+        {loading ? (
+          <div className="w-20 h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+        ) : (
+          <p className="text-3xl font-bold text-gray-800 dark:text-white min-w-[80px]">{displayTemp}{tempUnit}</p>
+        )}
       </div>
     </div>
   );

@@ -164,16 +164,16 @@ function WeatherDetails({ city, weatherData }) {
                 </p>
                 <p className="font-bold text-gray-800 dark:text-white ml-auto pr-3 text-base">
                   {convertTemperature(day.temperature, temperatureUnit)}{tempUnit}
-                </p>
-                <img
-                  src={getIcon(day.icon)}
-                  alt={day.day}
+                  </p>
+                  <img
+                    src={getIcon(day.icon)}
+                    alt={day.day}
                   className="w-10 h-10 object-contain"
-                  onError={(e) => {
+                    onError={(e) => {
                     const fallbackIcon = theme === "dark" ? "/WeatherIconsDark/Unknown.svg" : "/WeatherIconsLight/Unknown.svg";
                     e.currentTarget.src = fallbackIcon;
-                  }}
-                />
+                    }}
+                  />
               </div>
             ))}
           </div>

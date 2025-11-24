@@ -31,7 +31,6 @@ function HomePage() {
     }))
   );
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
@@ -39,7 +38,6 @@ function HomePage() {
 
   // Debounced city search
   const handleSearchChange = useCallback((query) => {
-    setSearchQuery(query);
 
     // Clear previous timer
     if (debounceTimer.current) {
@@ -113,7 +111,6 @@ function HomePage() {
   const handleCitySelect = useCallback((city) => {
     // Pass coordinates as URL params for NWS API
     navigate(`/weather/${encodeURIComponent(city.displayName)}?lat=${city.lat}&lon=${city.lon}`);
-    setSearchQuery("");
     setSearchResults([]);
   }, [navigate]);
 

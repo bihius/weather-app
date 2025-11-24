@@ -1,6 +1,6 @@
 import React from "react";
 import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
-import { useSettings } from "../../contexts/SettingsContext";
+import { useSettings } from "../../contexts/useSettings";
 import { convertTemperature, getTemperatureUnit } from "../../utils/temperature";
 
 function WeatherDetails({ city, weatherData }) {

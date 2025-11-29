@@ -114,8 +114,8 @@ function HomePage() {
   }, [navigate]);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="px-4 py-6 max-w-6xl mx-auto space-y-6">
+    <div className="fixed inset-0 bg-gray-50 dark:bg-gray-900 transition-colors overflow-hidden">
+      <div className="h-full overflow-y-auto px-4 py-6 max-w-6xl mx-auto space-y-6">
         <AppHeader />
         <SearchBar
           onSearchChange={handleSearchChange}

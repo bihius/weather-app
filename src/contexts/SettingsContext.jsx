@@ -16,6 +16,15 @@ export function SettingsProvider({ children }) {
     return saved || "celsius";
   });
 
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem("favorites");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Apply theme on mount and when it changes - use useLayoutEffect for synchronous update
   useLayoutEffect(() => {
     const root = document.documentElement;
@@ -36,12 +45,42 @@ export function SettingsProvider({ children }) {
     localStorage.setItem("temperatureUnit", temperatureUnit);
   }, [temperatureUnit]);
 
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-  const toggleTemperatureUnit = () => {
-    setTemperatureUnit((prev) => (prev === "celsius" ? "fahrenheit" : "celsius"));
+  const setTemperatureUnitDirect = (unit) => {
+    if (["celsius", "fahrenheit", "kelvin"].includes(unit)) {
+      setTemperatureUnit(unit);
+    }
+  };
+
+  // Helper function to create a unique city ID
+  const getCityId = (city, lat, lon) => {
+    if (lat && lon) {
+      return `${city}-${lat}-${lon}`;
+    }
+    return city;
+  };
+
+  const isFavorite = (city, lat, lon) => {
+    const cityId = getCityId(city, lat, lon);
+    return favorites.includes(cityId);
+  };
+
+  const toggleFavorite = (city, lat, lon) => {
+    const cityId = getCityId(city, lat, lon);
+    setFavorites((prev) => {
+      if (prev.includes(cityId)) {
+        return prev.filter((id) => id !== cityId);
+      } else {
+        return [...prev, cityId];
+      }
+    });
   };
 
   return (
@@ -50,7 +89,10 @@ export function SettingsProvider({ children }) {
         theme,
         temperatureUnit,
         toggleTheme,
-        toggleTemperatureUnit,
+        setTemperatureUnit: setTemperatureUnitDirect,
+        favorites,
+        isFavorite,
+        toggleFavorite,
       }}
     >
       {children}

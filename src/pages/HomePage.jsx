@@ -6,7 +6,6 @@ import CityCard from "../components/CityCard/CityCard";
 import { searchCities } from "../services/citySearch";
 import { getCurrentWeather } from "../utils/weatherIconMapper";
 
-// Cities data with coordinates (works worldwide now!)
 const INITIAL_CITIES = [
   { city: "New York", lat: 40.7128, lon: -74.0060 },
   { city: "London", lat: 51.5074, lon: -0.1278 },
@@ -115,7 +114,7 @@ function HomePage() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="px-4 py-6 max-w-6xl mx-auto space-y-6">
         <AppHeader />
         <SearchBar

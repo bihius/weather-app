@@ -79,8 +79,9 @@ export function SettingsProvider({ children }) {
 
   // Helper function to create a unique city ID
   // Uses pipe separator to avoid issues with negative coordinates (which would create double hyphens)
+  // Note: Must check typeof === 'number' instead of truthiness to handle lat=0 or lon=0 (valid coordinates)
   const getCityId = (city, lat, lon) => {
-    if (lat && lon) {
+    if (typeof lat === 'number' && typeof lon === 'number' && !isNaN(lat) && !isNaN(lon)) {
       return `${city}|${lat}|${lon}`;
     }
     return city;

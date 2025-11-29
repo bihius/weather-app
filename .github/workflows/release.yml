@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for tags
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -33,14 +35,52 @@ jobs:
       - name: Build application
         run: pnpm run build
 
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Get current tag
+          CURRENT_TAG=${{ github.ref_name }}
+          
+          # Get all tags sorted by version (newest first)
+          TAGS=($(git tag --sort=-version:refname))
+          
+          # Find current tag index and get previous tag
+          PREVIOUS_TAG=""
+          for i in "${!TAGS[@]}"; do
+            if [ "${TAGS[$i]}" = "$CURRENT_TAG" ] && [ $i -lt $((${#TAGS[@]} - 1)) ]; then
+              PREVIOUS_TAG="${TAGS[$((i + 1))]}"
+              break
+            fi
+          done
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            # No previous tag found, get all commits
+            git log --pretty=format:"- %s (%h)" --no-merges > CHANGELOG.txt
+          else
+            # Get commits between previous tag and current tag
+            git log ${PREVIOUS_TAG}..${CURRENT_TAG} --pretty=format:"- %s (%h)" --no-merges > CHANGELOG.txt
+          fi
+          
+          # Handle empty changelog
+          if [ ! -s CHANGELOG.txt ]; then
+            echo "- No changes" > CHANGELOG.txt
+          fi
+          
+          # Use multiline output
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          cat CHANGELOG.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          generate_release_notes: true
+          generate_release_notes: false
           body: |
             ## Release ${{ github.ref_name }}
             
-            Automatic release generated from tag
+            ### Changes
+            
+            ${{ steps.changelog.outputs.changelog }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -1,6 +1,5 @@
-import React, { createContext, useReducer, useEffect, useLayoutEffect } from "react";
-
-export const SettingsContext = createContext();
+import React, { useReducer, useEffect, useLayoutEffect } from "react";
+import { SettingsContext } from "./SettingsContext";
 
 // Initial state from localStorage
 const getInitialState = () => {

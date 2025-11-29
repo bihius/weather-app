@@ -36,7 +36,6 @@ jobs:
         run: pnpm run build
 
       - name: Generate Changelog
-        id: changelog
         run: |
           # Get current tag
           CURRENT_TAG=${{ github.ref_name }}
@@ -66,21 +65,20 @@ jobs:
             echo "- No changes" > CHANGELOG.txt
           fi
           
-          # Use multiline output
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          cat CHANGELOG.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # Build release body with changelog
+          {
+            echo "## Release ${{ github.ref_name }}"
+            echo ""
+            echo "### Changes"
+            echo ""
+            cat CHANGELOG.txt
+          } > RELEASE_BODY.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: false
-          body: |
-            ## Release ${{ github.ref_name }}
-            
-            ### Changes
-            
-            ${{ steps.changelog.outputs.changelog }}
+          body_path: RELEASE_BODY.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

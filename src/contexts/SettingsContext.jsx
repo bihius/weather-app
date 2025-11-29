@@ -1,29 +1,69 @@
-import React, { createContext, useState, useEffect, useLayoutEffect } from "react";
+import React, { createContext, useReducer, useEffect, useLayoutEffect } from "react";
 
 export const SettingsContext = createContext();
 
-export function SettingsProvider({ children }) {
-  // Get initial theme from localStorage
-  const getInitialTheme = () => {
-    const saved = localStorage.getItem("theme");
-    return saved || "light";
+// Initial state from localStorage
+const getInitialState = () => {
+  const savedTheme = localStorage.getItem("theme");
+  const savedTemperatureUnit = localStorage.getItem("temperatureUnit");
+  let savedFavorites = [];
+  try {
+    const favoritesData = localStorage.getItem("favorites");
+    savedFavorites = favoritesData ? JSON.parse(favoritesData) : [];
+  } catch {
+    savedFavorites = [];
+  }
+
+  return {
+    theme: savedTheme || "light",
+    temperatureUnit: savedTemperatureUnit || "celsius",
+    favorites: savedFavorites,
   };
+};
 
-  const [theme, setTheme] = useState(getInitialTheme);
+// Action types
+const SETTINGS_ACTIONS = {
+  TOGGLE_THEME: "TOGGLE_THEME",
+  SET_TEMPERATURE_UNIT: "SET_TEMPERATURE_UNIT",
+  TOGGLE_FAVORITE: "TOGGLE_FAVORITE",
+};
 
-  const [temperatureUnit, setTemperatureUnit] = useState(() => {
-    const saved = localStorage.getItem("temperatureUnit");
-    return saved || "celsius";
-  });
+// Reducer function
+const settingsReducer = (state, action) => {
+  switch (action.type) {
+    case SETTINGS_ACTIONS.TOGGLE_THEME:
+      return {
+        ...state,
+        theme: state.theme === "light" ? "dark" : "light",
+      };
 
-  const [favorites, setFavorites] = useState(() => {
-    try {
-      const saved = localStorage.getItem("favorites");
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
+    case SETTINGS_ACTIONS.SET_TEMPERATURE_UNIT:
+      if (["celsius", "fahrenheit", "kelvin"].includes(action.payload)) {
+        return {
+          ...state,
+          temperatureUnit: action.payload,
+        };
+      }
+      return state;
+
+    case SETTINGS_ACTIONS.TOGGLE_FAVORITE: {
+      const { cityId } = action.payload;
+      const isFavorite = state.favorites.includes(cityId);
+      return {
+        ...state,
+        favorites: isFavorite
+          ? state.favorites.filter((id) => id !== cityId)
+          : [...state.favorites, cityId],
+      };
     }
-  });
+
+    default:
+      return state;
+  }
+};
+
+export function SettingsProvider({ children }) {
+  const [state, dispatch] = useReducer(settingsReducer, getInitialState());
 
   // Apply theme on mount and when it changes - use useLayoutEffect for synchronous update
   useLayoutEffect(() => {
@@ -31,32 +71,31 @@ export function SettingsProvider({ children }) {
     // Remove dark class first to ensure clean state
     root.classList.remove("dark");
     // Add dark class if theme is dark
-    if (theme === "dark") {
+    if (state.theme === "dark") {
       root.classList.add("dark");
     }
-  }, [theme]);
+  }, [state.theme]);
 
-  // Save theme to localStorage (can be async)
+  // Save state to localStorage when it changes
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  useEffect(() => {
-    localStorage.setItem("temperatureUnit", temperatureUnit);
-  }, [temperatureUnit]);
+    localStorage.setItem("theme", state.theme);
+  }, [state.theme]);
 
   useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
+    localStorage.setItem("temperatureUnit", state.temperatureUnit);
+  }, [state.temperatureUnit]);
 
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(state.favorites));
+  }, [state.favorites]);
+
+  // Action creators
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    dispatch({ type: SETTINGS_ACTIONS.TOGGLE_THEME });
   };
 
   const setTemperatureUnitDirect = (unit) => {
-    if (["celsius", "fahrenheit", "kelvin"].includes(unit)) {
-      setTemperatureUnit(unit);
-    }
+    dispatch({ type: SETTINGS_ACTIONS.SET_TEMPERATURE_UNIT, payload: unit });
   };
 
   // Helper function to create a unique city ID
@@ -69,28 +108,22 @@ export function SettingsProvider({ children }) {
 
   const isFavorite = (city, lat, lon) => {
     const cityId = getCityId(city, lat, lon);
-    return favorites.includes(cityId);
+    return state.favorites.includes(cityId);
   };
 
   const toggleFavorite = (city, lat, lon) => {
     const cityId = getCityId(city, lat, lon);
-    setFavorites((prev) => {
-      if (prev.includes(cityId)) {
-        return prev.filter((id) => id !== cityId);
-      } else {
-        return [...prev, cityId];
-      }
-    });
+    dispatch({ type: SETTINGS_ACTIONS.TOGGLE_FAVORITE, payload: { cityId } });
   };
 
   return (
     <SettingsContext.Provider
       value={{
-        theme,
-        temperatureUnit,
+        theme: state.theme,
+        temperatureUnit: state.temperatureUnit,
         toggleTheme,
         setTemperatureUnit: setTemperatureUnitDirect,
-        favorites,
+        favorites: state.favorites,
         isFavorite,
         toggleFavorite,
       }}

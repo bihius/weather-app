@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import AppHeader from "../components/AppHeader/AppHeader";
 import CityCard from "../components/CityCard/CityCard";
 import { useSettings } from "../contexts/useSettings";
@@ -7,7 +6,6 @@ import { getCurrentWeather } from "../utils/weatherIconMapper";
 
 function FavoritesPage() {
   const { favorites } = useSettings();
-  const navigate = useNavigate();
 
   // Parse favorite IDs to extract city, lat, lon
   const parseFavoriteId = (favoriteId) => {

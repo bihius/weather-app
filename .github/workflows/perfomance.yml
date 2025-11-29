@@ -30,15 +30,18 @@ jobs:
       - name: Build application
         run: pnpm run build
 
-      - name: Run performance tests
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@latest
+
+      - name: Run Lighthouse CI
         run: |
-          # Zainstaluj lighthouse
-          npm install -g @lhci/cli@latest
-          # Albo własne testy wydajności
-          pnpm run test:performance || true
+          lhci autorun || true
 
       - name: Archive performance results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: performance-results
-          path: dist/
+          path: |
+            .lighthouseci/
+          retention-days: 30

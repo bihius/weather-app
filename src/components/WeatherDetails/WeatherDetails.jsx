@@ -3,9 +3,10 @@ import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
 import { useSettings } from "../../contexts/useSettings";
 import { convertTemperature, getTemperatureUnit } from "../../utils/temperature";
 
-function WeatherDetails({ city, weatherData }) {
-  const { temperatureUnit, theme } = useSettings();
+function WeatherDetails({ city, weatherData, lat, lon }) {
+  const { temperatureUnit, theme, isFavorite, toggleFavorite } = useSettings();
   const getIcon = (iconName) => getWeatherIconPath(iconName, theme);
+  const isFav = isFavorite(city, lat, lon);
 
   // Sample weather data structure - replace with actual API data
   const defaultData = {
@@ -35,12 +36,36 @@ function WeatherDetails({ city, weatherData }) {
   const tempUnit = getTemperatureUnit(temperatureUnit);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+    <div className="bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-2">
-          {city || "Weather Details"}
-        </h1>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white">
+            {city || "Weather Details"}
+          </h1>
+          <button
+            onClick={() => toggleFavorite(city, lat, lon)}
+            className="flex-shrink-0 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors"
+            aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+          >
+            <svg
+              className={`w-8 h-8 transition-colors ${
+                isFav
+                  ? "fill-yellow-400 text-yellow-400"
+                  : "fill-none text-gray-400 hover:text-yellow-400"
+              }`}
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+              />
+            </svg>
+          </button>
+        </div>
         <p className="text-gray-600 dark:text-gray-400">Current conditions and forecast</p>
       </div>
 

@@ -4,10 +4,10 @@ import { useSettings } from "../contexts/useSettings";
 
 function SettingsPage() {
   const navigate = useNavigate();
-  const { theme, temperatureUnit, toggleTheme, toggleTemperatureUnit } = useSettings();
+  const { theme, temperatureUnit, toggleTheme, setTemperatureUnit } = useSettings();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+    <div className="bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
         {/* Header and Back Button */}
         <div className="mb-8">
@@ -74,14 +74,12 @@ function SettingsPage() {
                   Temperature Unit
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
-                  Choose between Celsius and Fahrenheit
+                  Choose between Celsius, Fahrenheit, and Kelvin
                 </p>
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => {
-                    if (temperatureUnit !== "celsius") toggleTemperatureUnit();
-                  }}
+                  onClick={() => setTemperatureUnit("celsius")}
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                     temperatureUnit === "celsius"
                       ? "bg-blue-600 text-white"
@@ -91,9 +89,7 @@ function SettingsPage() {
                   °C
                 </button>
                 <button
-                  onClick={() => {
-                    if (temperatureUnit !== "fahrenheit") toggleTemperatureUnit();
-                  }}
+                  onClick={() => setTemperatureUnit("fahrenheit")}
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                     temperatureUnit === "fahrenheit"
                       ? "bg-blue-600 text-white"
@@ -101,6 +97,16 @@ function SettingsPage() {
                   }`}
                 >
                   °F
+                </button>
+                <button
+                  onClick={() => setTemperatureUnit("kelvin")}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    temperatureUnit === "kelvin"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                  }`}
+                >
+                  K
                 </button>
               </div>
             </div>

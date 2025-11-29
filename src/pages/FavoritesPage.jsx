@@ -9,14 +9,27 @@ function FavoritesPage() {
 
   // Parse favorite IDs to extract city, lat, lon
   const parseFavoriteId = (favoriteId) => {
-    // Format: "city-lat-lon"
-    const parts = favoriteId.split("-");
+    // Format: "city|lat|lon" (using pipe separator to avoid issues with negative coordinates)
+    const parts = favoriteId.split("|");
     if (parts.length >= 3) {
-      // Handle city names that might contain hyphens
       // Last two parts are always lat and lon
       const lon = parseFloat(parts[parts.length - 1]);
       const lat = parseFloat(parts[parts.length - 2]);
-      const city = parts.slice(0, -2).join("-");
+      // City name is everything before the last two parts
+      const city = parts.slice(0, -2).join("|");
+      
+      if (!isNaN(lat) && !isNaN(lon)) {
+        return { city, lat, lon };
+      }
+    }
+    // Fallback: try to parse old format with hyphens (for backward compatibility)
+    const hyphenParts = favoriteId.split("-");
+    if (hyphenParts.length >= 3) {
+      // Try to parse last two parts as numbers
+      const lastTwo = hyphenParts.slice(-2);
+      const lon = parseFloat(lastTwo[1]);
+      const lat = parseFloat(lastTwo[0]);
+      const city = hyphenParts.slice(0, -2).join("-");
       
       if (!isNaN(lat) && !isNaN(lon)) {
         return { city, lat, lon };

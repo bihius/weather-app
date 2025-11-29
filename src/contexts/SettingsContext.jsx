@@ -78,9 +78,10 @@ export function SettingsProvider({ children }) {
   };
 
   // Helper function to create a unique city ID
+  // Uses pipe separator to avoid issues with negative coordinates (which would create double hyphens)
   const getCityId = (city, lat, lon) => {
     if (lat && lon) {
-      return `${city}-${lat}-${lon}`;
+      return `${city}|${lat}|${lon}`;
     }
     return city;
   };

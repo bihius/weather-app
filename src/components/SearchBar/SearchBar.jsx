@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { trimCityName } from "../../utils/cityName";
 
 function SearchBar({ onSearchChange, searchResults, isLoading, onCitySelect }) {
   const [query, setQuery] = useState("");
@@ -94,7 +95,7 @@ function SearchBar({ onSearchChange, searchResults, isLoading, onCitySelect }) {
                   key={`${city.name}-${city.country}-${index}`}
                   onClick={() => {
                     onCitySelect(city);
-                    setQuery(city.displayName);
+                    setQuery(trimCityName(city.displayName || city.name));
                     setShowResults(false);
                   }}
                   className="w-full text-left px-6 py-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0"

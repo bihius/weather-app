@@ -1,10 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSettings } from "../contexts/useSettings";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { setTemperatureUnit } from "../store/temperatureUnitSlice";
 
 function SettingsPage() {
   const navigate = useNavigate();
-  const { theme, temperatureUnit, toggleTheme, setTemperatureUnit } = useSettings();
+  const { theme, toggleTheme } = useSettings();
+  const temperatureUnit = useAppSelector((state) => state.temperatureUnit);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="fixed inset-0 bg-gray-50 dark:bg-gray-900 overflow-hidden">
@@ -80,7 +84,7 @@ function SettingsPage() {
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => setTemperatureUnit("celsius")}
+                  onClick={() => dispatch(setTemperatureUnit("celsius"))}
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                     temperatureUnit === "celsius"
                       ? "bg-blue-600 text-white"
@@ -90,7 +94,7 @@ function SettingsPage() {
                   °C
                 </button>
                 <button
-                  onClick={() => setTemperatureUnit("fahrenheit")}
+                  onClick={() => dispatch(setTemperatureUnit("fahrenheit"))}
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                     temperatureUnit === "fahrenheit"
                       ? "bg-blue-600 text-white"
@@ -100,7 +104,7 @@ function SettingsPage() {
                   °F
                 </button>
                 <button
-                  onClick={() => setTemperatureUnit("kelvin")}
+                  onClick={() => dispatch(setTemperatureUnit("kelvin"))}
                   className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                     temperatureUnit === "kelvin"
                       ? "bg-blue-600 text-white"

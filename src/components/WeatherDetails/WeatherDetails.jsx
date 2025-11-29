@@ -1,10 +1,12 @@
 import React from "react";
 import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
 import { useSettings } from "../../contexts/useSettings";
+import { useAppSelector } from "../../store/hooks";
 import { convertTemperature, getTemperatureUnit } from "../../utils/temperature";
 
 function WeatherDetails({ city, weatherData, lat, lon }) {
-  const { temperatureUnit, theme, isFavorite, toggleFavorite } = useSettings();
+  const { theme, isFavorite, toggleFavorite } = useSettings();
+  const temperatureUnit = useAppSelector((state) => state.temperatureUnit);
   const getIcon = (iconName) => getWeatherIconPath(iconName, theme);
   const isFav = isFavorite(city, lat, lon);
 

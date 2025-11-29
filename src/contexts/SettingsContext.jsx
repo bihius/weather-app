@@ -5,7 +5,6 @@ export const SettingsContext = createContext();
 // Initial state from localStorage
 const getInitialState = () => {
   const savedTheme = localStorage.getItem("theme");
-  const savedTemperatureUnit = localStorage.getItem("temperatureUnit");
   let savedFavorites = [];
   try {
     const favoritesData = localStorage.getItem("favorites");
@@ -16,7 +15,6 @@ const getInitialState = () => {
 
   return {
     theme: savedTheme || "light",
-    temperatureUnit: savedTemperatureUnit || "celsius",
     favorites: savedFavorites,
   };
 };
@@ -24,7 +22,6 @@ const getInitialState = () => {
 // Action types
 const SETTINGS_ACTIONS = {
   TOGGLE_THEME: "TOGGLE_THEME",
-  SET_TEMPERATURE_UNIT: "SET_TEMPERATURE_UNIT",
   TOGGLE_FAVORITE: "TOGGLE_FAVORITE",
 };
 
@@ -36,15 +33,6 @@ const settingsReducer = (state, action) => {
         ...state,
         theme: state.theme === "light" ? "dark" : "light",
       };
-
-    case SETTINGS_ACTIONS.SET_TEMPERATURE_UNIT:
-      if (["celsius", "fahrenheit", "kelvin"].includes(action.payload)) {
-        return {
-          ...state,
-          temperatureUnit: action.payload,
-        };
-      }
-      return state;
 
     case SETTINGS_ACTIONS.TOGGLE_FAVORITE: {
       const { cityId } = action.payload;
@@ -82,20 +70,12 @@ export function SettingsProvider({ children }) {
   }, [state.theme]);
 
   useEffect(() => {
-    localStorage.setItem("temperatureUnit", state.temperatureUnit);
-  }, [state.temperatureUnit]);
-
-  useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(state.favorites));
   }, [state.favorites]);
 
   // Action creators
   const toggleTheme = () => {
     dispatch({ type: SETTINGS_ACTIONS.TOGGLE_THEME });
-  };
-
-  const setTemperatureUnitDirect = (unit) => {
-    dispatch({ type: SETTINGS_ACTIONS.SET_TEMPERATURE_UNIT, payload: unit });
   };
 
   // Helper function to create a unique city ID
@@ -120,9 +100,7 @@ export function SettingsProvider({ children }) {
     <SettingsContext.Provider
       value={{
         theme: state.theme,
-        temperatureUnit: state.temperatureUnit,
         toggleTheme,
-        setTemperatureUnit: setTemperatureUnitDirect,
         favorites: state.favorites,
         isFavorite,
         toggleFavorite,

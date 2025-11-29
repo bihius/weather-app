@@ -2,11 +2,13 @@ import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FALLBACK_ICON, getWeatherIconPath } from "../../utils/weatherIcons";
 import { useSettings } from "../../contexts/useSettings";
+import { useAppSelector } from "../../store/hooks";
 import { convertTemperature, getTemperatureUnit } from "../../utils/temperature";
 
 function CityCard({ city, temperature, icon, lat, lon, loading = false }) {
   const navigate = useNavigate();
-  const { temperatureUnit, theme } = useSettings();
+  const { theme } = useSettings();
+  const temperatureUnit = useAppSelector((state) => state.temperatureUnit);
   const iconSrc = useMemo(() => getWeatherIconPath(icon, theme), [icon, theme]);
 
   const handleClick = () => {

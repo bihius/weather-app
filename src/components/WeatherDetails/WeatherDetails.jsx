@@ -40,7 +40,7 @@ function WeatherDetails({ city, weatherData, lat, lon }) {
       <div className="h-full overflow-y-auto p-4 md:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-8">
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex items-center justify-center gap-3 mb-2">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white">
             {city || "Weather Details"}
           </h1>
@@ -67,7 +67,7 @@ function WeatherDetails({ city, weatherData, lat, lon }) {
             </svg>
           </button>
         </div>
-        <p className="text-gray-600 dark:text-gray-400">Current conditions and forecast</p>
+        <p className="text-center text-gray-600 dark:text-gray-400">Current conditions and forecast</p>
       </div>
 
       {/* Main Content */}

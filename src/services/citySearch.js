@@ -7,6 +7,8 @@
  * Documentation: https://nominatim.org/release-docs/develop/api/Search/
  */
 
+import { trimCityName } from "../utils/cityName";
+
 const API_BASE_URL = "https://nominatim.openstreetmap.org/search";
 
 /**
@@ -104,6 +106,9 @@ export async function searchCities(query, limit = 10) {
           }
         }
         
+        // Trim name to only the part before the first comma (in case API returns full location)
+        name = trimCityName(name);
+        
         // Extract state/region
         const state = address.state || 
                       address.region || 
@@ -114,14 +119,9 @@ export async function searchCities(query, limit = 10) {
         // Extract country
         const country = address.country || "";
         
-        // Build display name - make it cleaner
-        let displayName = name;
-        if (state && state !== name && !state.includes(name)) {
-          displayName += `, ${state}`;
-        }
-        if (country && country !== name && !displayName.includes(country)) {
-          displayName += `, ${country}`;
-        }
+        // Build display name - use just the city name (already trimmed)
+        // Keep full location info in separate fields for reference
+        let displayName = name; // Already trimmed to first comma
         
         return {
           name: name,
@@ -129,7 +129,7 @@ export async function searchCities(query, limit = 10) {
           state: state,
           lat: parseFloat(item.lat),
           lon: parseFloat(item.lon),
-          displayName: displayName,
+          displayName: displayName, // Just the city name, trimmed to first comma
         };
       })
       .filter((item) => {

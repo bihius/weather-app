@@ -5,6 +5,7 @@ import AppHeader from "../components/AppHeader/AppHeader";
 import CityCard from "../components/CityCard/CityCard";
 import { searchCities } from "../services/citySearch";
 import { getCurrentWeather } from "../utils/weatherIconMapper";
+import { trimCityName } from "../utils/cityName";
 
 const INITIAL_CITIES = [
   { city: "New York", lat: 40.7128, lon: -74.0060 },
@@ -108,8 +109,9 @@ function HomePage() {
   }, []);
 
   const handleCitySelect = useCallback((city) => {
-    // Pass coordinates as URL params for NWS API
-    navigate(`/weather/${encodeURIComponent(city.displayName)}?lat=${city.lat}&lon=${city.lon}`);
+    // Pass coordinates as URL params, using trimmed city name
+    const cityName = trimCityName(city.displayName || city.name);
+    navigate(`/weather/${encodeURIComponent(cityName)}?lat=${city.lat}&lon=${city.lon}`);
     setSearchResults([]);
   }, [navigate]);
 

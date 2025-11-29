@@ -2,8 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Get initial temperature unit from localStorage
 const getInitialTemperatureUnit = () => {
-  const saved = localStorage.getItem("temperatureUnit");
-  return saved || "celsius";
+  try {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("temperatureUnit");
+      return saved || "celsius";
+    }
+  } catch (error) {
+    console.error("Error reading temperatureUnit from localStorage:", error);
+  }
+  return "celsius";
 };
 
 const temperatureUnitSlice = createSlice({

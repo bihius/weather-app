@@ -7,8 +7,9 @@ function SettingsPage() {
   const { theme, temperatureUnit, toggleTheme, setTemperatureUnit } = useSettings();
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
-      <div className="max-w-2xl mx-auto">
+    <div className="fixed inset-0 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <div className="h-full overflow-y-auto p-4 md:p-8">
+        <div className="max-w-2xl mx-auto">
         {/* Header and Back Button */}
         <div className="mb-8">
           <button
@@ -114,6 +115,7 @@ function SettingsPage() {
               Current: <span className="font-semibold capitalize">{temperatureUnit}</span>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

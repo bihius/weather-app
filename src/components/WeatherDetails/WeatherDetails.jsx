@@ -36,7 +36,8 @@ function WeatherDetails({ city, weatherData, lat, lon }) {
   const tempUnit = getTemperatureUnit(temperatureUnit);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+    <div className="fixed inset-0 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <div className="h-full overflow-y-auto p-4 md:p-8">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -203,6 +204,7 @@ function WeatherDetails({ city, weatherData, lat, lon }) {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

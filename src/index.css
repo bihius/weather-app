@@ -5,4 +5,28 @@
   :root {
     color-scheme: light dark;
   }
+  
+  html, body {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Hide scrollbars but allow scrolling */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }

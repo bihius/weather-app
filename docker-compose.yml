@@ -37,7 +37,6 @@ services:
       start_period: 10s
     labels:
       - "com.weather-app.description=Weather App - Nginx Web Server"
-      - "com.weather-app.version=1.0.0"
 
 volumes:
   build-output:

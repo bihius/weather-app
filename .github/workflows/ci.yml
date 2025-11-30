@@ -5,35 +5,8 @@ on:
     branches: [main]
 
 jobs:
-  test-lint-security:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run linter
-        run: pnpm run lint
-
-      - name: Run tests
-        run: pnpm run test || true
-
-      - name: Security audit
-        run: pnpm audit --audit-level=moderate
-
-      - name: SAST scan with npm audit
-        run: pnpm audit --production
-
+  test-lint-build:
+    uses: ./.github/workflows/reusable_ci.yml
+    with:
+      run_build: false
+      run_security: true

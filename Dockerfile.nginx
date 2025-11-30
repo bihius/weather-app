@@ -3,12 +3,10 @@ FROM nginx:1.25-alpine
 # Install wget for health checks
 RUN apk add --no-cache wget
 
-# Copy nginx configuration (will be overridden by volume mount in compose)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 # Expose port 80
 EXPOSE 80
 
 # Start nginx
+# Note: nginx.conf is mounted as a volume in docker-compose.yml
 CMD ["nginx", "-g", "daemon off;"]
 

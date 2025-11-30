@@ -1,22 +1,44 @@
 version: '3.8'
 
 services:
-  weather-app:
+  # Builder service - Node.js container for building the application
+  builder:
     build:
       context: .
       dockerfile: Dockerfile
-      target: production
-    container_name: weather-app
+      target: builder
+    container_name: weather-app-builder
+    volumes:
+      - build-output:/app/dist
+    command: sh -c "pnpm build && echo 'Build completed successfully'"
+    environment:
+      - NODE_ENV=production
+    restart: "no"
+
+  # Web server - Nginx container for serving the built application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: weather-app-web
     ports:
       - "80:80"
+    volumes:
+      - build-output:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - builder
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
       interval: 30s
       timeout: 3s
       retries: 3
-      start_period: 5s
+      start_period: 10s
     labels:
-      - "com.weather-app.description=Weather App - React Application"
+      - "com.weather-app.description=Weather App - Nginx Web Server"
       - "com.weather-app.version=1.0.0"
 
+volumes:
+  build-output:
+    driver: local

@@ -37,3 +37,5 @@ jspm_packages/
 
 # ACT
 .actrc
+
+.cursor/

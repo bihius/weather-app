@@ -51,11 +51,11 @@ function AppHeader() {
             />
           </svg>
         </button>
-        <button
-          onClick={handleSettingsClick}
-          className="p-2 hover:bg-white/20 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
-          aria-label="Settings"
-        >
+      <button
+        onClick={handleSettingsClick}
+        className="p-2 hover:bg-white/20 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+        aria-label="Settings"
+      >
         <svg
           className="w-6 h-6"
           fill="none"
@@ -75,7 +75,7 @@ function AppHeader() {
             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
           />
         </svg>
-        </button>
+      </button>
       </div>
     </header>
   );

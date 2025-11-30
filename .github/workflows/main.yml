@@ -2,45 +2,17 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [main, dev]
-  pull_request:
-    branches: [main, dev]
+    branches: [main]
 
 jobs:
-  test-lint-scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run linter
-        run: pnpm run lint
-
-      - name: Run tests
-        run: pnpm run test || true # || true = nie przerwij jeśli testy się wysypią
-
-      - name: Security audit
-        run: pnpm audit --audit-level=moderate
-
-      - name: SAST scan with npm audit
-        run: pnpm audit --production
+  test-lint-build:
+    uses: ./.github/workflows/reusable_ci.yml
+    with:
+      run_build: true
+      run_security: false
 
   build-and-push:
-    needs: test-lint-scan # Czeka na test job
+    needs: test-lint-build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -49,23 +21,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build application
-        run: pnpm run build
 
       - name: Set up Docker Buildx
         if: ${{ !env.ACT }}

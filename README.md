@@ -2,27 +2,27 @@
 
 A modern, feature-rich weather application built with React, Vite, and Tailwind CSS. Get real-time weather forecasts for any city worldwide with a beautiful, responsive interface.
 
-## ✨ Features
+## Features
 
 ### Core Functionality
-- **🌍 Worldwide City Search** - Search for any city globally using Nominatim (OpenStreetMap)
-- **🌤️ Real-time Weather Data** - Current conditions and 5-day forecasts via Open-Meteo API
-- **⭐ Favorites System** - Save your favorite cities for quick access
-- **🔍 Smart Search** - Debounced city search with autocomplete suggestions
+- **Worldwide City Search** - Search for any city globally using Nominatim (OpenStreetMap)
+- **Real-time Weather Data** - Current conditions and 5-day forecasts via Open-Meteo API
+- **Favorites System** - Save your favorite cities for quick access
+- **Smart Search** - Debounced city search with autocomplete suggestions
 
 ### User Experience
-- **🌓 Dark/Light Mode** - Toggle between themes with persistent preferences
-- **🌡️ Temperature Units** - Switch between Celsius, Fahrenheit, and Kelvin
-- **📱 Responsive Design** - Works seamlessly on desktop, tablet, and mobile
-- **🎨 Modern UI** - Beautiful gradient headers and smooth animations
+- **Dark/Light Mode** - Toggle between themes with persistent preferences
+- **Temperature Units** - Switch between Celsius, Fahrenheit, and Kelvin
+- **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- **Modern UI** - Beautiful gradient headers and smooth animations
 
 ### Technical Features
-- **⚡ Fast Performance** - Built with Vite for lightning-fast development and builds
-- **🔄 State Management** - Redux Toolkit for temperature unit, React Context for theme/favorites
-- **🧭 React Router** - Multi-page navigation with URL-based routing
-- **💾 Local Storage** - Persistent user preferences and favorites
+- **Fast Performance** - Built with Vite for lightning-fast development and builds
+- **State Management** - Redux Toolkit for temperature unit, React Context for theme/favorites
+- **React Router** - Multi-page navigation with URL-based routing
+- **Local Storage** - Persistent user preferences and favorites
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend Framework:** React 19
 - **Build Tool:** Vite 7
@@ -35,7 +35,7 @@ A modern, feature-rich weather application built with React, Vite, and Tailwind 
   - [Open-Meteo](https://open-meteo.com/) - Free weather API (no key required)
   - [Nominatim](https://nominatim.org/) - Free geocoding API (no key required)
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 - Node.js 22 or higher
@@ -62,7 +62,7 @@ A modern, feature-rich weather application built with React, Vite, and Tailwind 
 4. **Open in browser**
    Navigate to `http://localhost:5173`
 
-## 🚀 Usage
+## Usage
 
 ### Home Page
 - View popular cities with current weather
@@ -85,7 +85,7 @@ A modern, feature-rich weather application built with React, Vite, and Tailwind 
 - Switch temperature units (Celsius, Fahrenheit, Kelvin)
 - All preferences are saved automatically
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 weather-app/
@@ -125,7 +125,7 @@ weather-app/
 └── package.json             # Dependencies and scripts
 ```
 
-## 🧪 Development
+## Development
 
 ### Available Scripts
 
@@ -146,7 +146,7 @@ pnpm lint
 pnpm test
 ```
 
-## 🐳 Docker
+## Docker
 
 ### Build Docker Image
 ```bash
@@ -165,7 +165,7 @@ The app will be available at `http://localhost`
 docker-compose up
 ```
 
-## 🔄 CI/CD
+## CI/CD
 
 The project includes automated CI/CD pipelines:
 
@@ -185,7 +185,7 @@ The project includes automated CI/CD pipelines:
   - Lighthouse CI performance testing
   - Generates performance reports
 
-## 📝 API Information
+## API Information
 
 ### Weather API (Open-Meteo)
 - **Free:** No API key required
@@ -199,7 +199,7 @@ The project includes automated CI/CD pipelines:
 - **Rate Limits:** Please use responsibly (1 request per second recommended)
 - **Data:** City coordinates and location information
 
-## 🎯 Key Features Explained
+## Key Features Explained
 
 ### Favorites System
 - Cities are saved with coordinates for accurate weather retrieval
@@ -216,7 +216,7 @@ The project includes automated CI/CD pipelines:
 - Theme preference persists across sessions
 - Smooth transitions between themes
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -224,11 +224,11 @@ The project includes automated CI/CD pipelines:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is open source and available under the MIT License.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Open-Meteo](https://open-meteo.com/) for free weather data
 - [Nominatim](https://nominatim.org/) for free geocoding services

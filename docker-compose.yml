@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  weather-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: weather-app
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    labels:
+      - "com.weather-app.description=Weather App - React Application"
+      - "com.weather-app.version=1.0.0"
+

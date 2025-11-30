@@ -44,8 +44,8 @@ function WeatherDetails({ city, weatherData, lat, lon }) {
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-center gap-3 mb-2">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white">
-            {city || "Weather Details"}
-          </h1>
+          {city || "Weather Details"}
+        </h1>
           <button
             onClick={() => toggleFavorite(city, lat, lon)}
             className="flex-shrink-0 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors"
@@ -205,8 +205,8 @@ function WeatherDetails({ city, weatherData, lat, lon }) {
               </div>
             ))}
           </div>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );

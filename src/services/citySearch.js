@@ -7,6 +7,7 @@
  * Documentation: https://nominatim.org/release-docs/develop/api/Search/
  */
 
+import axios from "axios";
 import { trimCityName } from "../utils/cityName";
 
 const API_BASE_URL = "https://nominatim.openstreetmap.org/search";
@@ -32,17 +33,13 @@ export async function searchCities(query, limit = 10) {
     url.searchParams.append("extratags", "1");
     
     // Required by Nominatim: User-Agent header
-    const response = await fetch(url.toString(), {
+    const response = await axios.get(url.toString(), {
       headers: {
         "User-Agent": "WeatherApp/1.0 (contact: weather-app@example.com)",
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
+    const data = response.data;
 
     if (!data || data.length === 0) {
       return [];

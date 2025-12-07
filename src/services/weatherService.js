@@ -7,6 +7,7 @@
  * Works worldwide for any location on Earth.
  */
 
+import axios from "axios";
 import { mapWeatherCodeToIcon } from "../utils/weatherIconMapper";
 
 const OPEN_METEO_API_BASE = "https://api.open-meteo.com/v1/forecast";
@@ -28,13 +29,8 @@ export async function getWeatherForecast(lat, lon) {
     url.searchParams.append("timezone", "auto");
     url.searchParams.append("forecast_days", "6"); // Today + 5 days
 
-    const response = await fetch(url.toString());
-
-    if (!response.ok) {
-      throw new Error(`Failed to get weather data: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
+    const response = await axios.get(url.toString());
+    const data = response.data;
 
     // Transform Open-Meteo data to our app's format
     return transformOpenMeteoData(data);

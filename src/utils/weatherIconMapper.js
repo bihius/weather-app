@@ -7,6 +7,9 @@
  * @param {number} weatherCode - WMO weather code (0-99)
  * @returns {string} Icon name matching our app's icon files
  */
+
+import axios from "axios";
+
 export function mapWeatherCodeToIcon(weatherCode) {
   if (weatherCode === undefined || weatherCode === null) {
     return "Unknown";
@@ -69,13 +72,8 @@ export async function getCurrentWeather(lat, lon) {
     url.searchParams.append("current", "temperature_2m,weather_code");
     url.searchParams.append("timezone", "auto");
 
-    const response = await fetch(url.toString());
-
-    if (!response.ok) {
-      throw new Error(`Failed to get weather data: ${response.status}`);
-    }
-
-    const data = await response.json();
+    const response = await axios.get(url.toString());
+    const data = response.data;
     const current = data.current || {};
 
     return {

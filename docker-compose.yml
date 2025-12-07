@@ -37,6 +37,17 @@ services:
     labels:
       - "com.weather-app.description=Weather App - Nginx Web Server"
 
+  # Dummy database - Postgres container for testing
+  db:
+    image: postgres:16-alpine
+    container_name: dummy-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=weather-app
+    restart: unless-stopped
+
 volumes:
   build-output:
     driver: local

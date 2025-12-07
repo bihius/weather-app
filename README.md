@@ -29,6 +29,7 @@ A modern, feature-rich weather application built with React, Vite, and Tailwind 
 - **Styling:** Tailwind CSS 4
 - **State Management:** Redux Toolkit, React Context API
 - **Routing:** React Router DOM 7
+- **HTTP Client:** Axios
 - **Package Manager:** pnpm
 - **Linting:** ESLint 9
 - **APIs:**
@@ -118,8 +119,11 @@ weather-app/
 │   └── main.jsx             # Application entry point
 ├── .github/
 │   └── workflows/           # GitHub Actions workflows
-│       ├── main.yml         # CI/CD pipeline
+│       ├── ci.yml           # CI pipeline for pull requests
+│       ├── main.yml         # CI/CD pipeline for main branch
+│       ├── reusable_ci.yml  # Reusable CI workflow
 │       ├── release.yml      # Release automation
+│       ├── deploy.yml       # Deployment workflow
 │       └── perfomance.yml   # Performance testing
 ├── public/                   # Static assets
 └── package.json             # Dependencies and scripts
@@ -161,29 +165,65 @@ docker run -p 80:80 weather-app
 The app will be available at `http://localhost`
 
 ### Docker Compose
+
+The project uses a multi-container setup with separate builder and web server containers:
+
 ```bash
-docker-compose up
+docker compose up -d
+```
+
+This will:
+- Build the React application in a Node.js container
+- Serve the built app using Nginx
+- Start a PostgreSQL database container (for testing)
+
+The app will be available at `http://localhost:8089`
+
+**Services:**
+- `builder` - Node.js container that builds the application
+- `web` - Nginx container serving the built application
+- `db` - PostgreSQL 16 database container (port 5432)
+
+**Stop containers:**
+```bash
+docker compose down
+```
+
+**View logs:**
+```bash
+docker compose logs -f
 ```
 
 ## CI/CD
 
 The project includes automated CI/CD pipelines:
 
-- **Main Workflow** (`main.yml`): Runs on push/PR to main/dev branches
+- **CI Workflow** (`ci.yml`): Runs on pull requests to main
   - Linting
   - Testing
-  - Security audit
+  - Security audit (pnpm audit, SAST scan)
+
+- **Main Workflow** (`main.yml`): Runs on push to main branch
+  - Linting
+  - Testing
+  - Production build
   - Docker image build and push to GitHub Container Registry
 
 - **Release Workflow** (`release.yml`): Runs on version tag push (v*)
   - Builds application
-  - Generates changelog from commits
-  - Creates GitHub release
+  - Generates changelog from git commits
+  - Creates GitHub release with custom changelog
   - Builds and pushes Docker image with version tags
+
+- **Deploy Workflow** (`deploy.yml`): Runs on version tag push (v*)
+  - Deploys application via SSH
+  - Pulls latest Docker images
+  - Restarts containers using docker compose
 
 - **Performance Workflow** (`perfomance.yml`): Runs weekly and on main branch pushes
   - Lighthouse CI performance testing
   - Generates performance reports
+  - Uploads artifacts for analysis
 
 ## API Information
 
